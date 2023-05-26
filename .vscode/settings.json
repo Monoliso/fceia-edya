@@ -1,0 +1,19 @@
+{
+    "C_Cpp.vcFormat.newLine.beforeOpenBrace.block": "sameLine",
+    "files.associations": {
+        "locale_t.h": "c",
+        "stdlib.h": "c",
+        "string.h": "c",
+        "stdio.h": "c",
+        "slist.h": "c",
+        "contacto.h": "c",
+        "dlist.h": "c"
+    },
+    "editor.formatOnSave": true,
+    // Las ligaduras deben estar con fuentes compatibles.
+    "editor.fontLigatures": true,
+    "editor.fontFamily": "Cascadia Code, Consolas, 'Courier New', monospace",
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+    "editor.tabSize": 2,
+    "files.autoSave": "off"
+}

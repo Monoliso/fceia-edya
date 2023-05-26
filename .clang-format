@@ -1,0 +1,18 @@
+---
+# Mezcla de convención propia y FCEIA.
+# Opciones: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+
+Language:        Cpp # Ojo con esto, se usa también para C.
+# BasedOnStyle:  LLVM
+AccessModifierOffset: -2
+AlignAfterOpenBracket: BlockIndent
+AlignArrayOfStructures: Left
+AlignConsecutiveAssignments: true
+AllowShortIfStatementsOnASingleLine: true
+BreakBeforeBraces: Attach
+ColumnLimit:     80
+IndentWidth:     2
+SortIncludes: CaseSensitive
+SpaceBeforeParens: ControlStatements
+...
+
