@@ -5,12 +5,6 @@ CFLAGS = -Wall -Wextra -Werror -std=c99
 
 objetivos: $(OBJETIVO)
 
-Practica01: matriz_uni.o
-
-bin/matriz_bi: ./src/Practica01.c ./src/matriz_bi.c
-
-bin/Practica00: src/Practica00.c
-
 02: practicas/02.c estructuras/slist.c estructuras/dlist.c \
 		estructuras/cdlist.c estructuras/glist.c practicas/02-contacto.c
 	$(CC) $(CFLAGS) $^ -o bin/$@

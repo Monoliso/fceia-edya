@@ -1,0 +1,8 @@
+---
+# Al igual que clang-format, hay que tener mucho cuidado con todo lo tipeado.
+# Si hay alguna sintaxis que no se reconoce no va a avisar, va a aplicar los
+# checks por defecto
+
+Checks: '-*,clang-analyzer-*,cppcoreguidelines-*,-cppcoreguidelines-avoid-magic-numbers'
+User: 'Luca'
+# CheckOptions:

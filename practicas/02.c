@@ -37,7 +37,7 @@ void ejercicio_04() {
   puts("");
   dlist_recorrer(lista_doble, imprimir_entero, DLIST_RECORRIDO_HACIA_ATRAS);
   puts("");
-  lista_doble = dlist_destruir(lista_doble);
+  dlist_destruir(lista_doble);
 }
 
 void ejercicio_05() {

@@ -8,7 +8,7 @@
       "name": "(gdb) Launch",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/src/Practica02-extra/slist/main",
+      "program": "${workspaceFolder}/",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
