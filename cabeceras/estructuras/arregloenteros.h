@@ -1,0 +1,4 @@
+#ifndef ARREGLO_ENTEROS
+#define ARREGLO_ENTEROS
+
+#endif

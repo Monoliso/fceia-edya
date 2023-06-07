@@ -2,7 +2,7 @@
 
 ## Organización
 La organización se intentó mantener lo más simple y funcional posible, dejando por separado una carpeta con todas las cabeceras.
-Desconozco si esta organización simplifica o complica, por lo que está en otra rama
+Desconozco si esta organización simplifica o complica, por lo que está en otra rama.
 
 Fuentes:
 

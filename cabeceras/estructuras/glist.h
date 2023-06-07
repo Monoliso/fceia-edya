@@ -36,6 +36,8 @@ int glist_vacia(GList lista);
  */
 GList glist_agregar_inicio(GList lista, void *dato, FuncionCopia copiar);
 
+GList glist_remover_inicio(GList, FuncionDestructora);
+
 /**
  * Recorrido de la lista, utilizando la funcion pasada.
  */

@@ -10,7 +10,9 @@
         "stdio.h": "c",
         "slist.h": "c",
         "contacto.h": "c",
-        "dlist.h": "c"
+        "dlist.h": "c",
+        "gstack.h": "c",
+        "glist.h": "c"
     },
     // Las ligaduras deben estar con fuentes compatibles.
     "editor.fontLigatures": true,

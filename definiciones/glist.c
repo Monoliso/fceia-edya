@@ -39,6 +39,15 @@ GList glist_agregar_inicio(GList list, void *data, FuncionCopia copy) {
   return newNode;
 }
 
+GList glist_remover_inicio(GList lista, FuncionDestructora demoledora) {
+  if (glist_vacia(lista)) return NULL;
+
+  GNode *nueva_lista = lista->next;
+  lista->next        = NULL;
+  glist_destruir(lista, demoledora);
+  return nueva_lista;
+}
+
 /**
  * Recorrido de la lista, utilizando la funcion pasada.
  */

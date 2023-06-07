@@ -3,6 +3,7 @@
 SHELL = /bin/sh
 CFLAGS = -g -Wall -Wextra -Werror -std=c99
 CABECERAS= ./cabeceras
+# Variable de interes: VPATH
 
 objetivos: $(OBJETIVO)
 
@@ -12,6 +13,9 @@ objetivos: $(OBJETIVO)
 
 02-extra: practicas/02-extra.c/slist.c
 	$(CC) $(CFLAGS) $^ -o bin/$@
+
+03: practicas/03.c definiciones/gstack.c definiciones/glist.c practicas/02-contacto.c
+	$(CC) $(CFLAGS) -I$(CABECERAS) $^ -o bin/$@
 
 btree: practicas/test.c definiciones/btree.c
 	$(CC) $(CFLAGS) -I$(CABECERAS) $^ -o bin/$@
