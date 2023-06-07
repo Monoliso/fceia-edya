@@ -1,8 +1,8 @@
-#include "../estructuras/cdlist.h"
-#include "../estructuras/dlist.h"
-#include "../estructuras/glist.h"
-#include "../estructuras/slist.h"
 #include "02-contacto.h"
+#include "estructuras/cdlist.h"
+#include "estructuras/dlist.h"
+#include "estructuras/glist.h"
+#include "estructuras/slist.h"
 #include <stdio.h>
 #include <stdlib.h>
 

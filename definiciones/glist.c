@@ -1,4 +1,4 @@
-#include "glist.h"
+#include "estructuras/glist.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,8 +53,7 @@ void glist_recorrer(GList list, FuncionVisitante visit) {
 GList glist_filtrar(GList lista, FuncionCopia c, Predicado p) {
   GList nueva_lista = glist_crear();
 
-  if (lista == NULL)
-    return NULL;
+  if (lista == NULL) return NULL;
 
   for (GNode *nodo = lista; nodo != NULL; nodo = nodo->next) {
     if (p(nodo->data)) {
@@ -118,8 +117,7 @@ SGList sglist_insertar(
       nodo_anterior = nodo;
       nodo          = nodo->next;
     } else {
-      if (nodo_anterior != NULL)
-        nodo_anterior->next = nuevo_nodo;
+      if (nodo_anterior != NULL) nodo_anterior->next = nuevo_nodo;
       if (nodo == NULL)
         nuevo_nodo->next = NULL;
       else
@@ -135,8 +133,7 @@ int sglist_buscar(SGList lista, void *dato, FuncionComparadora comparar) {
   int encontrado = 0, buscar = 1;
   GNode *nodo = lista;
   for (; encontrado != 1 && buscar == 1 && nodo != NULL; nodo = nodo->next) {
-    if (nodo == NULL)
-      buscar = 0;
+    if (nodo == NULL) buscar = 0;
     if (comparar(nodo->data, dato) == 0) {
       encontrado = 1;
       buscar     = 0;
@@ -150,8 +147,7 @@ SGList sglist_arr(
     FuncionComparadora comparar
 ) {
   SGList lista = sglist_crear();
-  if (arreglo == NULL)
-    return NULL;
+  if (arreglo == NULL) return NULL;
   for (int i = 0; i < longitud; i++) {
     lista = sglist_insertar(lista, arreglo[i], copiar, comparar);
   }

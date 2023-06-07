@@ -1,4 +1,4 @@
-#include "slist.h"
+#include "estructuras/slist.h"
 #include <stdlib.h>
 
 SList slist_crear() { return NULL; }

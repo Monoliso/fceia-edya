@@ -1,4 +1,4 @@
-#include "cdlist.h"
+#include "estructuras/cdlist.h"
 #include <stdlib.h>
 
 CDList cdlist_crear() { return NULL; }

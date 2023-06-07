@@ -1,4 +1,4 @@
-#include "dlist.h"
+#include "estructuras/dlist.h"
 #include <stdlib.h>
 
 DList dlist_crear() {

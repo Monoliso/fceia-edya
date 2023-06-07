@@ -3,6 +3,12 @@
 
 typedef void (*FuncionVisitante)(int dato);
 
+struct _BTNodo {
+  int dato;
+  struct _BTNodo *left;
+  struct _BTNodo *right;
+};
+
 typedef enum {
   BTREE_RECORRIDO_IN,
   BTREE_RECORRIDO_PRE,
@@ -35,7 +41,12 @@ BTree btree_unir(int dato, BTree left, BTree right);
 /**
  * Recorrido del arbol, utilizando la funcion pasada.
  */
-void btree_recorrer(BTree arbol, BTreeOrdenDeRecorrido orden,
-                    FuncionVisitante visit);
+void btree_recorrer(
+    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitante visit
+);
+
+void btree_recorrer_preorden(BTree arbol, FuncionVisitante funcion);
+void btree_recorrer_inorden(BTree arbol, FuncionVisitante funcion);
+void btree_recorrer_postorden(BTree arbol, FuncionVisitante funcion);
 
 #endif /* __BTREE_H__ */
