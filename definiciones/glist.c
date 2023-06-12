@@ -13,7 +13,7 @@ GList glist_crear() { return NULL; }
  * destroy es una función que libera el dato almacenado.
  */
 void glist_destruir(GList list, FuncionDestructora destroy) {
-  GNode *nodeToDelete;
+  GNode *nodeToDelete = NULL;
   while (list != NULL) {
     nodeToDelete = list;
     list         = list->next;
@@ -39,11 +39,25 @@ GList glist_agregar_inicio(GList list, void *data, FuncionCopia copy) {
   return newNode;
 }
 
+GList glist_agregar_final(GList lista, void *data, FuncionCopia copy) {
+  GNode *nuevo_nodo = malloc(sizeof(GNode));
+  assert(nuevo_nodo != NULL);
+  nuevo_nodo->data = copy(data);
+  nuevo_nodo->next = NULL;
+  if (lista == NULL) return nuevo_nodo;
+
+  GNode *nodo = lista;
+  for (; nodo->next != NULL; nodo = nodo->next)
+    ;
+  nodo->next = nuevo_nodo;
+  return lista;
+}
+
 GList glist_remover_inicio(GList lista, FuncionDestructora demoledora) {
   if (glist_vacia(lista)) return NULL;
 
-  GNode *nueva_lista = lista->next;
-  lista->next        = NULL;
+  GList nueva_lista = lista->next;
+  lista->next       = NULL;
   glist_destruir(lista, demoledora);
   return nueva_lista;
 }
@@ -77,7 +91,7 @@ GList glist_filtrar(GList lista, FuncionCopia c, Predicado p) {
 SGList sglist_crear() { return NULL; }
 
 void sglist_destruir(SGList lista, FuncionDestructora demoledora) {
-  GNode *nodeToDelete;
+  GNode *nodeToDelete = NULL;
   while (lista != NULL) {
     nodeToDelete = lista;
     lista        = lista->next;
@@ -95,8 +109,8 @@ void sglist_recorrer(SGList list, FuncionVisitante visit) {
 };
 
 SGList sglist_insertar(
-    SGList lista, void *dato, FuncionCopia copiar, FuncionComparadora comparar
-) {
+    SGList lista, void *dato, FuncionCopia copiar,
+    FuncionComparadora comparar) {
   GNode *nuevo_nodo = malloc(sizeof(GNode));
   nuevo_nodo->data  = copiar(dato);
 
@@ -153,8 +167,7 @@ int sglist_buscar(SGList lista, void *dato, FuncionComparadora comparar) {
 
 SGList sglist_arr(
     void **arreglo, int longitud, FuncionCopia copiar,
-    FuncionComparadora comparar
-) {
+    FuncionComparadora comparar) {
   SGList lista = sglist_crear();
   if (arreglo == NULL) return NULL;
   for (int i = 0; i < longitud; i++) {

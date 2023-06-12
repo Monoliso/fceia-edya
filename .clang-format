@@ -5,7 +5,7 @@
 Language:        Cpp # Ojo con esto, se usa también para C.
 # BasedOnStyle:  LLVM
 AccessModifierOffset: -2
-AlignAfterOpenBracket: BlockIndent
+AlignAfterOpenBracket: AlwaysBreak
 AlignArrayOfStructures: Left
 AlignConsecutiveAssignments: true
 AllowShortIfStatementsOnASingleLine: true

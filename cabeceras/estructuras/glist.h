@@ -31,10 +31,17 @@ void glist_destruir(GList lista, FuncionDestructora destruir);
  */
 int glist_vacia(GList lista);
 
+int glist_tamanio(GList);
+
 /**
  * Agrega un elemento al inicio de la lista.
  */
 GList glist_agregar_inicio(GList lista, void *dato, FuncionCopia copiar);
+
+/**
+ * Agrega un elemento al final de la lista.
+ */
+GList glist_agregar_final(GList lista, void *dato, FuncionCopia copiar);
 
 GList glist_remover_inicio(GList, FuncionDestructora);
 
