@@ -4,6 +4,7 @@ SHELL = /bin/sh
 CFLAGS = -g -Wall -Wextra -Werror -std=c99
 CABECERAS= ./cabeceras
 # Variable de interes: VPATH
+# TODO: Reemplazar las reglas implicitas para borrar varias de las líneas repetidas.
 
 objetivos: $(OBJETIVO)
 
@@ -19,6 +20,12 @@ objetivos: $(OBJETIVO)
 
 btree: practicas/test.c definiciones/btree.c
 	$(CC) $(CFLAGS) -I$(CABECERAS) $^ -o bin/$@
+
+04-02: practicas/04-02.c obj/gheaps.o
+	$(CC) $(CFLAGS) -I$(CABECERAS) $^ -o bin/$@
+
+obj/gheaps.o: definiciones/gheaps.c cabeceras/estructuras/gheaps.h
+	$(CC) $(CFLAGS) -I$(CABECERAS) $< -c -o $@
 
 .PHONY: clean
 clean:
