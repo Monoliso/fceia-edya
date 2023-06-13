@@ -4,6 +4,8 @@
 
 int cmp_int(int *a, int *b) { return *a - *b; }
 
+void eliminar_int(int *entero) { free(entero); };
+
 int *copiar_int(int *entero) {
   int *copia = malloc(sizeof(int));
   *copia     = *entero;
@@ -16,10 +18,12 @@ int main() {
     bheap = bheap_insertar(bheap, &i, (FuncionCopia)copiar_int);
   }
 
-  int *valor = (int *)bheap->arr;
+  int **valor = (int **)bheap->arr;
   for (int i = 1; i <= 5; i++) {
-    printf("%d ", *(valor + i));
+    printf("%d ", *(valor[i]));
   }
   puts("");
+
+  bheap_destruir(bheap, (FuncionDestructora)eliminar_int);
   return 0;
 }
