@@ -1,4 +1,5 @@
 #include "estructuras/btree.h"
+#include "estructuras/gqueue.h"
 #include <assert.h>
 #include <stdio.h> //
 #include <stdlib.h>
@@ -25,7 +26,7 @@ BTree btree_unir(int dato, BTree left, BTree right) {
 }
 
 void btree_recorrer(
-    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitante visit) {
+    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitante04 visit) {
   /** COMPLETAR */
   if (btree_empty(arbol)) return;
   assert(!btree_empty(arbol));
@@ -39,7 +40,7 @@ void btree_recorrer(
   return;
 }
 
-void btree_recorrer_preorden(BTree arbol, FuncionVisitante funcion) {
+void btree_recorrer_preorden(BTree arbol, FuncionVisitante04 funcion) {
   if (!btree_empty(arbol)) {
     funcion(arbol->dato);
     btree_recorrer_preorden(arbol->left, funcion);
@@ -47,15 +48,15 @@ void btree_recorrer_preorden(BTree arbol, FuncionVisitante funcion) {
   }
 }
 
-void btree_recorrer_inorden(BTree arbol, FuncionVisitante funcion) {
+void btree_recorrer_inorden(BTree arbol, FuncionVisitante04 funcion) {
   if (!btree_empty(arbol)) {
-    btree_recorrer_preorden(arbol->left, funcion);
+    btree_recorrer_inorden(arbol->left, funcion);
     funcion(arbol->dato);
-    btree_recorrer_preorden(arbol->right, funcion);
+    btree_recorrer_inorden(arbol->right, funcion);
   }
 }
 
-void btree_recorrer_postorden(BTree arbol, FuncionVisitante funcion) {
+void btree_recorrer_postorden(BTree arbol, FuncionVisitante04 funcion) {
   if (!btree_empty(arbol)) {
     btree_recorrer_preorden(arbol->left, funcion);
     btree_recorrer_preorden(arbol->right, funcion);
@@ -172,7 +173,7 @@ int btree_sumar(BTree arbol) {
 }
 
 void btree_recorrer_extra(
-    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitanteExtra visit,
+    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitanteExtra04 visit,
     void *extra) {
   if (btree_empty(arbol) ||
       (btree_empty(arbol->left) && btree_empty(arbol->right)))
@@ -202,7 +203,7 @@ void suma(int dato, int *resultado) { (*resultado) = dato + (*resultado); }
 int btree_sumar_extra(BTree arbol) {
   int resultado = 0;
   btree_recorrer_extra(
-      arbol, BTREE_RECORRIDO_IN, (FuncionVisitanteExtra)suma, &resultado);
+      arbol, BTREE_RECORRIDO_IN, (FuncionVisitanteExtra04)suma, &resultado);
   return resultado;
 }
 
@@ -211,7 +212,7 @@ int btree_sumar_extra(BTree arbol) {
 // int btree_nnodos(BTree arbol) {
 //   int resultado = 0;
 //   btree_recorrer_extra(
-//       arbol, BTREE_RECORRIDO_IN, (FuncionVisitanteExtra)aumentar,
+//       arbol, BTREE_RECORRIDO_IN, (FuncionVisitanteExtra04)aumentar,
 //       &resultado);
 //   return resultado;
 // }
@@ -232,9 +233,39 @@ int btree_buscar_extra(BTree arbol, int cosa) {
   son_iguales(cosa, &resultado);
   resultado = 0;
   btree_recorrer_extra(
-      arbol, BTREE_RECORRIDO_IN, (FuncionVisitanteExtra)son_iguales,
+      arbol, BTREE_RECORRIDO_IN, (FuncionVisitanteExtra04)son_iguales,
       &resultado);
   return resultado;
 }
 
 // BOOM
+
+void btree_recorrer_bfs(
+    BTree arbol, FuncionVisitante04 visit, FuncionCopia04 copia,
+    FuncionDestructora04 demoledora) {
+  int nodos = 0;
+  int cant_nivel = 1;
+  GQueue cola = gqueue_crear();
+  cola = gqueue_encolar(cola, arbol, (FuncionCopia04)copia);
+
+  printf("El árbol se mostrará bien si está completo.\n");
+  while (!gqueue_vacia(cola)) {
+    arbol = gqueue_inicio(cola, (FuncionCopia04)copia);
+    cola = gqueue_desencolar(cola, (FuncionDestructora04)demoledora);
+    if (!btree_empty(arbol->left)) {
+      cola = gqueue_encolar(cola, arbol->left, (FuncionCopia04)copia);
+    }
+    if (!btree_empty(arbol->right)) {
+      cola = gqueue_encolar(cola, arbol->right, (FuncionCopia04)copia);
+    }
+    visit(arbol->dato);
+    nodos++;
+    if (cant_nivel == nodos) {
+      printf("\n");
+      nodos = 0;
+      cant_nivel *= 2;
+    }
+  }
+  printf("\n");
+  gqueue_destruir(cola, (FuncionDestructora04)demoledora);
+}

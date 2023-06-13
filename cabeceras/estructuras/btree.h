@@ -1,8 +1,10 @@
 #ifndef __BTREE_H__
 #define __BTREE_H__
 
-typedef void (*FuncionVisitante)(int dato);
-typedef void (*FuncionVisitanteExtra)(int dato, void *extra);
+typedef void (*FuncionVisitante04)(int dato);
+typedef void (*FuncionVisitanteExtra04)(int dato, void *extra);
+typedef void (*FuncionDestructora04)(void *dato);
+typedef void *(*FuncionCopia04)(void *dato);
 struct _BTNodo {
   int dato;
   struct _BTNodo *left;
@@ -42,11 +44,11 @@ BTree btree_unir(int dato, BTree left, BTree right);
  * Recorrido del arbol, utilizando la funcion pasada.
  */
 void btree_recorrer(
-    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitante visit);
+    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitante04 visit);
 
-void btree_recorrer_preorden(BTree arbol, FuncionVisitante funcion);
-void btree_recorrer_inorden(BTree arbol, FuncionVisitante funcion);
-void btree_recorrer_postorden(BTree arbol, FuncionVisitante funcion);
+void btree_recorrer_preorden(BTree arbol, FuncionVisitante04 funcion);
+void btree_recorrer_inorden(BTree arbol, FuncionVisitante04 funcion);
+void btree_recorrer_postorden(BTree arbol, FuncionVisitante04 funcion);
 
 // ---------------------
 
@@ -92,7 +94,7 @@ int btree_profundidad(BTree arbol, int dato);
 int btree_sumar(BTree);
 
 void btree_recorrer_extra(
-    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitanteExtra visit,
+    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitanteExtra04 visit,
     void *extra);
 
 int btree_sumar_extra(BTree);
@@ -100,5 +102,10 @@ int btree_sumar_extra(BTree);
 int btree_buscar_extra(BTree, int);
 
 void son_iguales(int, int *);
+
+// Ejercicio 5
+void btree_recorrer_bfs(
+    BTree arbol, FuncionVisitante04 visit, FuncionCopia04 copia,
+    FuncionDestructora04 demoledora);
 
 #endif /* __BTREE_H__ */
