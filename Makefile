@@ -18,7 +18,7 @@ objetivos: $(OBJETIVO)
 03: practicas/03.c definiciones/gqueue.c definiciones/gstack.c definiciones/glist.c practicas/02-contacto.c
 	$(CC) $(CFLAGS) -I$(CABECERAS) $^ -o bin/$@
 
-btree: practicas/test.c definiciones/btree.c
+04: practicas/04.c definiciones/btree.c
 	$(CC) $(CFLAGS) -I$(CABECERAS) $^ -o bin/$@
 
 04-02: practicas/04-02.c obj/gheaps.o

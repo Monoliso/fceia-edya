@@ -7,7 +7,7 @@ Language:        Cpp # Ojo con esto, se usa también para C.
 AccessModifierOffset: -2
 AlignAfterOpenBracket: AlwaysBreak
 AlignArrayOfStructures: Left
-AlignConsecutiveAssignments: true
+# AlignConsecutiveAssignments: true
 AllowShortIfStatementsOnASingleLine: true
 BreakBeforeBraces: Attach
 ColumnLimit:     80

@@ -12,7 +12,8 @@
         "contacto.h": "c",
         "dlist.h": "c",
         "gstack.h": "c",
-        "glist.h": "c"
+        "glist.h": "c",
+        "btree.h": "c"
     },
     // Las ligaduras deben estar con fuentes compatibles.
     "editor.fontLigatures": true,
