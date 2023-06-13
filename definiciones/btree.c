@@ -1,5 +1,4 @@
 #include "estructuras/btree.h"
-#include "estructuras/gstack.h" //
 #include <assert.h>
 #include <stdio.h> //
 #include <stdlib.h>
@@ -91,59 +90,79 @@ int *copiar_int(int *entero) {
 }
 
 void imprimir_linea(
-    int dato, int nivel, int *niveles_abiertos, int niv_recorridos) {
+    int dato, int izq, int *niveles_abiertos, int niv_recorridos) {
   // El problema con la pila es que tiene sentido para el guardado, pero a la
   // hora de imprimir cada línea tengo que saber cuales niveles siguen abiertos,
   // empezando por el primero, entonces cómo hago? Tengo una variable llamada
   // niveles recorridos?
-  GNode *nodo = niveles_abiertos;
-  for (int i = niv_recorridos; i == 0; i--) {
-    if (i == nodo->data) {
-      printf("|");
-    }
-    printf("  ");
+  for (int i = 0; i < niv_recorridos; i++) {
+    if (niveles_abiertos[i]) {
+      printf("│  ");
+    } else
+      printf("   ");
   }
-
-  // |  Hay que ir imprimiendo al principio de cada línea, o puedo guardar en un
-  // array y agregar al principio, pero para eso paso el array de niveles y
-  // listo..
+  if (dato != 0) {
+    if (izq)
+      printf("└─ %d\n", dato);
+    else
+      printf("│─ %d\n", dato);
+  } else {
+    if (izq)
+      printf("└─ (nil)\n");
+    else
+      printf("│─ (nil)\n");
+  }
 }
 
-void btree_imprimir_aux(BTree arbol, int izq, Pila pila, int niv_recorridos) {
-  if (btree_empty(arbol)) return;
-  if (btree_empty(arbol->left) && btree_empty(arbol->right)) {
-    imprimir_linea(arbol->dato, izq, pila, niv_recorridos);
-    return;
-  }
+void btree_imprimir_aux(
+    BTree arbol, int izq, int *niv_abiertos, int niv_recorridos) {
+
+  imprimir_linea(arbol->dato, izq, niv_abiertos, niv_recorridos);
+  if (btree_empty(arbol->left) && btree_empty(arbol->right)) return;
 
   niv_recorridos++;
-  pila = gstack_push00(pila, &niv_recorridos, (FuncionCopia)copiar_int);
-  btree_imprimir_aux(arbol->right, 0, pila, niv_recorridos);
-  btree_imprimir_aux(arbol->left, 1, pila, niv_recorridos);
-  pila = gstack_desapilar00(pila, (FuncionDestructora)eliminar_int);
+  niv_abiertos[niv_recorridos] = 1;
+
+  if (btree_empty(arbol->left)) {
+    btree_imprimir_aux(arbol->right, 0, niv_abiertos, niv_recorridos);
+    imprimir_linea(0, 1, niv_abiertos, niv_recorridos);
+  } else if (btree_empty(arbol->right)) {
+    imprimir_linea(0, 0, niv_abiertos, niv_recorridos);
+    niv_abiertos[niv_recorridos] = 0;
+    btree_imprimir_aux(arbol->left, 1, niv_abiertos, niv_recorridos);
+  } else {
+    btree_imprimir_aux(arbol->right, 0, niv_abiertos, niv_recorridos);
+    niv_abiertos[niv_recorridos] = 0;
+    btree_imprimir_aux(arbol->left, 1, niv_abiertos, niv_recorridos);
+  }
 }
 
 void btree_imprimir(BTree arbol) {
   if (btree_empty(arbol)) return;
   printf("%d\n", arbol->dato);
-  // int *niveles_abiertos = malloc(sizeof(int) * 50);
-  int niv_recorridos = 1;
-  Pila niveles_abiertos = gstack_crear();
-  niveles_abiertos = gstack_push00(
-      niveles_abiertos, &niv_recorridos, (FuncionCopia)copiar_int);
+  int *niveles_abiertos = malloc(sizeof(int) * 50);
+  int niv_recorridos = 0;
+  niveles_abiertos[0] = 1;
   btree_imprimir_aux(arbol->right, 0, niveles_abiertos, niv_recorridos);
+  niveles_abiertos[0] = 0;
   btree_imprimir_aux(arbol->left, 1, niveles_abiertos, niv_recorridos);
-  niveles_abiertos =
-      gstack_desapilar00(niveles_abiertos, (FuncionDestructora)eliminar_int);
-  ;
+  free(niveles_abiertos);
 }
+
+/*
+4
+|- 3
+|  |- 4
+|  └ (nil)
+└- 2
+   |- (nil)
+   └- 1
+*/
 
 /*
  5
  |- 4
  |  |- 2
- |  |  |- (nil)
- |  |  └- (nil)
  |  └- 3
  |     |- 5
  |     |  |- 8
