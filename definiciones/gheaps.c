@@ -41,19 +41,35 @@ void bheap_destruir(BHeap bheap, FuncionDestructora demoledora) {
 }
 
 BHeap bheap_eliminar(BHeap bheap, void *dato, FuncionDestructora demoledora) {
-  int i = 1;
-  int sea_mayor = 1;
-  for (; bheap->arr[i] != dato && i <= bheap->ultimo; i++)
-    ;
-  if (i > bheap->ultimo) return bheap;
-
+  int pos_padre = 1;
+  int sea_mayor = 0;
   void **arreglo = bheap->arr;
-  demoledora(arreglo[i]);
-  arreglo[i] == arreglo[bheap->ultimo];
-  bheap->capacidad--;
+  // bheap->arr[i] != dato
+  for (;
+       bheap->comp(arreglo[pos_padre], dato) != 0 && pos_padre <= bheap->ultimo;
+       pos_padre++)
+    ;
+  if (pos_padre > bheap->ultimo) return bheap;
 
-  while (sea_mayor) {
-    // if (bheap->comp(dato, ))
-    // for (int i = 0; ) // Cómo puedo hacer que recorra un nivel, solo uno?
+  demoledora(arreglo[pos_padre]);
+  bheap->ultimo -= 1;
+
+  while (pos_padre * 2 < bheap->ultimo && !sea_mayor) {
+    int pos_hijo = pos_padre * 2;
+    // arreglo[pos_hijo + 1] > arreglo[pos_hijo]
+    if (pos_hijo + 1 <= bheap->ultimo &&
+        bheap->comp(arreglo[pos_hijo + 1], arreglo[pos_hijo]) > 0) {
+      pos_hijo += 1;
+    }
+    // arreglo[i] > arreglo[pos_hijo]
+    if (bheap->comp(arreglo[pos_padre], arreglo[pos_hijo]) > 0)
+      sea_mayor = 1;
+    else {
+      void *temp = arreglo[pos_padre];
+      arreglo[pos_padre] = arreglo[pos_hijo];
+      arreglo[pos_hijo] = temp;
+    }
+    pos_padre = pos_hijo;
   }
-  return 0;
+  return bheap;
+}

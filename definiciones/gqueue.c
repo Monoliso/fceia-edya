@@ -3,9 +3,9 @@
 #include <stdlib.h>
 
 GQueue gqueue_crear() {
-  GQueue cola  = malloc(sizeof(_GQueue));
+  GQueue cola = malloc(sizeof(_GQueue));
   cola->inicio = NULL;
-  cola->final  = NULL;
+  cola->final = NULL;
   return cola;
 }
 
@@ -15,8 +15,8 @@ GQueue gqueue_crear() {
 // cola->final = glist_agregar_final(cola->final, dato, copiar);
 GQueue gqueue_encolar(GQueue cola, void *dato, FuncionCopia copiar) {
   GNode *nodo = malloc(sizeof(GNode));
-  nodo->data  = copiar(dato);
-  nodo->next  = NULL;
+  nodo->data = copiar(dato);
+  nodo->next = NULL;
 
   if (cola->inicio == NULL) cola->inicio = nodo;
   if (cola->final != NULL) cola->final->next = nodo;

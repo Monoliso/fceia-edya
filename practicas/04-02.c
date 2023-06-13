@@ -8,7 +8,7 @@ void eliminar_int(int *entero) { free(entero); };
 
 int *copiar_int(int *entero) {
   int *copia = malloc(sizeof(int));
-  *copia     = *entero;
+  *copia = *entero;
   return copia;
 }
 
@@ -23,7 +23,12 @@ int main() {
     printf("%d ", *(valor[i]));
   }
   puts("");
-
+  int i = 4;
+  bheap = bheap_eliminar(bheap, &i, (FuncionDestructora)eliminar_int);
+  for (int i = 1; i <= 4; i++) {
+    printf("%d ", *(valor[i]));
+  }
+  puts("");
   bheap_destruir(bheap, (FuncionDestructora)eliminar_int);
   return 0;
 }
