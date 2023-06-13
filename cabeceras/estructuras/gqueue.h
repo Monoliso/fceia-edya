@@ -13,7 +13,7 @@ typedef _GQueue *GQueue;
 // GCola gqueue_crear();
 GQueue gqueue_crear();
 
-GQueue gqueue_destruir(GQueue, FuncionDestructora);
+void gqueue_destruir(GQueue, FuncionDestructora);
 
 int gqueue_vacia(GQueue);
 

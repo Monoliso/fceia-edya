@@ -26,6 +26,7 @@ GQueue gqueue_encolar(GQueue cola, void *dato, FuncionCopia copiar) {
 
 GQueue gqueue_desencolar(GQueue cola, FuncionDestructora demoledora) {
   cola->inicio = glist_remover_inicio(cola->inicio, demoledora);
+  if (cola->inicio == NULL) cola->final = NULL;
   return cola;
 }
 
@@ -35,13 +36,13 @@ void *gqueue_inicio(GQueue cola, FuncionCopia copiar) {
   return dato;
 }
 
-int gqueue_vacia(GQueue cola) { return cola == NULL; }
+int gqueue_vacia(GQueue cola) { return (cola == NULL || cola->inicio == NULL); }
 
-GQueue gqueue_destruir(GQueue cola, FuncionDestructora demoledora) {
+void gqueue_destruir(GQueue cola, FuncionDestructora demoledora) {
   glist_destruir(cola->inicio, demoledora);
   cola->inicio = NULL;
-  cola->final  = NULL;
-  return cola;
+  cola->final = NULL;
+  free(cola);
 }
 
 void gqueue_imprimir(GQueue cola, FuncionVisitante visitante) {

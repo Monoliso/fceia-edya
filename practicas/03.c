@@ -8,7 +8,7 @@
 
 int *copiar_int(int *entero) {
   int *copia = malloc(sizeof(int));
-  *copia     = *entero;
+  *copia = *entero;
   return copia;
 }
 
@@ -37,8 +37,8 @@ void ejercicio_02(Contacto **contactos) {
 }
 
 void ejercicio_03(Contacto **contactos) {
-  GList lista           = glist_crear();
-  Pila pila             = gstack_crear();
+  GList lista = glist_crear();
+  Pila pila = gstack_crear();
   GList lista_invertida = glist_crear();
 
   for (int i = 0; i < 3; ++i) {
@@ -56,7 +56,7 @@ void ejercicio_03(Contacto **contactos) {
     // Lo que debe hacer es iterar el tamaño de la pila, popeando en cada
     // repetición.
     Contacto *contacto = gstack_pop(&pila);
-    lista_invertida    = glist_agregar_final(
+    lista_invertida = glist_agregar_final(
         lista_invertida, contacto, (FuncionCopia)contacto_copia);
     contacto_destruir(contacto);
   }
@@ -77,7 +77,7 @@ void ejercicio_04() {
   }
 
   int *numero00 = gqueue_inicio(cola, (FuncionCopia)copiar_int);
-  cola          = gqueue_desencolar(cola, (FuncionDestructora)eliminar_int);
+  cola = gqueue_desencolar(cola, (FuncionDestructora)eliminar_int);
   int *numero01 = gqueue_inicio(cola, (FuncionCopia)copiar_int);
   printf("Números: %d y %d\n", *numero00, *numero01);
   eliminar_int(numero00);
@@ -86,9 +86,7 @@ void ejercicio_04() {
   cola = gqueue_desencolar(cola, (FuncionDestructora)eliminar_int);
   gqueue_imprimir(cola, (FuncionVisitante)imprimir_int);
   puts("");
-  cola = gqueue_destruir(cola, (FuncionDestructora)eliminar_int);
-  printf("Cola inicio: %p, cola final: %p\n", cola->inicio, cola->final);
-  free(cola);
+  gqueue_destruir(cola, (FuncionDestructora)eliminar_int);
 }
 
 int main() {
