@@ -11,6 +11,8 @@ BHeap bheap_crear(int capacidad, FuncionComparadora comparadora) {
   return bheap;
 }
 
+int bheap_vacio(BHeap bheap) { return bheap == NULL || bheap->ultimo == 0; }
+
 BHeap bheap_insertar(BHeap bheap, void *dato, FuncionCopia copiar) {
   if (bheap == NULL) return NULL;
   if (bheap->capacidad == bheap->ultimo) {
@@ -31,4 +33,20 @@ BHeap bheap_insertar(BHeap bheap, void *dato, FuncionCopia copiar) {
   return bheap;
 }
 
-int bheap_vacio(BHeap bheap) { return bheap == NULL || bheap->ultimo == 0; }
+void bheap_destruir(BHeap bheap, FuncionDestructora demoledora) {
+  for (int i = 1; i <= bheap->ultimo; i++)
+    demoledora(bheap->arr[i]);
+  free(bheap->arr);
+  free(bheap);
+}
+
+BHeap bheap_eliminar(
+    BHeap bheap, void *dato, FuncionComparadora comp,
+    FuncionDestructora demoledora) {
+  void **arreglo = bheap->arr;
+  int i          = bheap->ultimo;
+  for (; i > 1 && comp(dato, arreglo[i / 2]) > 0; i /= 2)
+    ;
+  // for (int i = 0; ) // Cómo puedo hacer que recorra un nivel, solo uno?
+  return 0;
+}
