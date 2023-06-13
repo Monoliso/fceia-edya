@@ -79,16 +79,6 @@ void btree_recorrer_postorden(BTree arbol, FuncionVisitante funcion) {
   }
 }
 
-int cmp_int(int *a, int *b) { return *a - *b; }
-
-void eliminar_int(int *entero) { free(entero); };
-
-int *copiar_int(int *entero) {
-  int *copia = malloc(sizeof(int));
-  *copia = *entero;
-  return copia;
-}
-
 void imprimir_linea(
     int dato, int izq, int *niveles_abiertos, int niv_recorridos) {
   // El problema con la pila es que tiene sentido para el guardado, pero a la
@@ -148,33 +138,3 @@ void btree_imprimir(BTree arbol) {
   btree_imprimir_aux(arbol->left, 1, niveles_abiertos, niv_recorridos);
   free(niveles_abiertos);
 }
-
-/*
-4
-|- 3
-|  |- 4
-|  └ (nil)
-└- 2
-   |- (nil)
-   └- 1
-*/
-
-/*
- 5
- |- 4
- |  |- 2
- |  └- 3
- |     |- 5
- |     |  |- 8
- |     |  |  |- 10
- |     |  |  └- 11
- |     |  |      |- 12
- |     |  |      └- 13
- |     |  └- 9
- |     └- 6
- |        |- 1
- |        └- (nil)
- └- 3
-    |- 0
-    └- 2
- */
