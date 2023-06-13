@@ -2,7 +2,7 @@
 #define __BTREE_H__
 
 typedef void (*FuncionVisitante)(int dato);
-
+typedef void (*FuncionVisitanteExtra)(int dato, void *extra);
 struct _BTNodo {
   int dato;
   struct _BTNodo *left;
@@ -48,6 +48,57 @@ void btree_recorrer_preorden(BTree arbol, FuncionVisitante funcion);
 void btree_recorrer_inorden(BTree arbol, FuncionVisitante funcion);
 void btree_recorrer_postorden(BTree arbol, FuncionVisitante funcion);
 
+// ---------------------
+
+/**
+ * Imprime un esquema del árbol.
+ */
 void btree_imprimir(BTree arbol);
+
+/**
+ * Retorna el número de nodos del ́arbol.
+ */
+int btree_nnodos(BTree);
+
+/**
+ * Retorna 1 si el número dado se encuentra en el  ́arbol, y 0 en caso contrario.
+ */
+int btree_buscar(BTree, int);
+
+/**
+ * Retorna un nuevo ́arbol que sea una copia del ́arbol dado.
+ */
+BTree btree_copiar(BTree);
+
+/**
+ * Retorna la altura del ́arbol.
+ */
+int btree_altura(BTree);
+
+/**
+ * Retorna el número de nodos que se encuentran a la profundidad dada.
+ */
+int btree_nnodos_profundidad(BTree, int);
+
+/**
+ * Retorne la profundidad del nodo que contiene el número dado, y -1 si el
+ * número no se encuentra en el árbol.
+ */
+int btree_profundidad(BTree arbol, int dato);
+
+/**
+ * Retorna la suma total de los datos del árbol.
+ */
+int btree_sumar(BTree);
+
+void btree_recorrer_extra(
+    BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitanteExtra visit,
+    void *extra);
+
+int btree_sumar_extra(BTree);
+
+int btree_buscar_extra(BTree, int);
+
+void son_iguales(int, int *);
 
 #endif /* __BTREE_H__ */
