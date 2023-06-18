@@ -1,3 +1,5 @@
+#include "dinint.h"
+#include "dinstr.h"
 #include "estructuras/gbstree.h"
 #include <assert.h>
 #include <stdio.h>
@@ -26,21 +28,6 @@ static void imprimir_cadena(void *dato, __attribute__((unused)) void *extra) {
   printf("\"%s\" ", (char *)dato);
 }
 
-void imprimir_entero(int *data) { printf("%d", *data); }
-void imprimir_string(char *data) { printf("%s", data); }
-void *id(void *dato) { return dato; }
-void vacio(void *dato) { id(dato); }
-int *copiar_int(int *entero) {
-  int *copia = malloc(sizeof(int));
-  *copia = *entero;
-  return copia;
-}
-void eliminar_int(int *entero) { free(entero); };
-int cmp_int(int *a, int *b) {
-  int resultado = *a - *b;
-  return resultado;
-}
-
 int main() {
 
   char *palabras[N_PALABRAS] = {"gato",      "perro",    "casa",     "persona",
@@ -65,10 +52,10 @@ int main() {
     valores[i] = numeros + i;
   }
   BSTree arbol01 = bts_crear_desde_preorden(
-      valores, dimension, (FuncionCopiadora)copiar_int,
-      (FuncionComparadora)cmp_int, (FuncionDestructora)eliminar_int);
-  gbtree_imprimir(arbol01, (FuncionVisitante)imprimir_entero);
-  gbtree_imprimir(arbol, (FuncionVisitante)imprimir_string);
+      valores, dimension, (FuncionCopiadora)int_copiar,
+      (FuncionComparadora)int_comparar, (FuncionDestructora)int_eliminar);
+  gbtree_imprimir(arbol01, (FuncionVisitante)int_imprimir);
+  gbtree_imprimir(arbol, (FuncionVisitante)str_imprimir);
 
   // Buscar elementos
   assert(bstree_buscar(arbol, "farmacia") == 1);

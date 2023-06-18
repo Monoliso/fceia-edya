@@ -21,7 +21,7 @@ objetivos: $(OBJETIVO)
 04: practicas/04.c definiciones/btree.c definiciones/gqueue.c definiciones/glist.c
 	$(CC) $(CFLAGS) -I$(CABECERAS) $^ -o bin/$@
 
-04-01: practicas/04-01.c definiciones/gbstree.c
+04-01: practicas/04-01.c definiciones/gbstree.c definiciones/dinint.c definiciones/dinstr.c
 	$(CC) $(CFLAGS) -I$(CABECERAS) $^ -o bin/$@
 
 04-02: practicas/04-02.c obj/gheaps.o
