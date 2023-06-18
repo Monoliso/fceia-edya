@@ -51,6 +51,8 @@ int main() {
   for (int i = 0; i < dimension; i++) {
     valores[i] = numeros + i;
   }
+  // TODO: Cambiar bts_crear_desde_preorden para que no sea tan asqueroso.
+  // TODO: Generar un árbol a partir de preorden e inorden.
   BSTree arbol01 = bts_crear_desde_preorden(
       valores, dimension, (FuncionCopiadora)int_copiar,
       (FuncionComparadora)int_comparar, (FuncionDestructora)int_eliminar);
