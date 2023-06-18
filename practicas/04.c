@@ -5,8 +5,8 @@
 static void imprimir_entero(int data) { printf("%d ", data); }
 
 void *id(void *dato) { return dato; }
-
 void vacio(void *dato) { id(dato); }
+int cmp_int(int *a, int *b) { return *a - *b; }
 
 int main() {
   BTree ll = btree_unir(1, btree_crear(), btree_crear());
@@ -39,13 +39,9 @@ int main() {
   printf(
       "La cantidad de nodos en la altura 4 es: %d\n",
       btree_nnodos_profundidad(arbol, 4));
-  printf("Una copia exacta del árbol es:\n");
-  BTree arbol01 = btree_copiar(arbol);
-  btree_imprimir(arbol01);
 
   btree_destruir(raiz);
   btree_destruir(arbol);
-  btree_destruir(arbol01);
 
   return 0;
 }
