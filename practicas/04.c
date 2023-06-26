@@ -29,6 +29,7 @@ int main() {
   puts("");
   printf("Esquema del árbol:\n");
   btree_imprimir(arbol);
+  print_binary_tree(arbol);
   btree_recorrer_bfs(
       arbol, (FuncionVisitante04)imprimir_entero, (FuncionCopia04)id,
       (FuncionDestructora04)vacio);

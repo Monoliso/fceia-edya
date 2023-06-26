@@ -108,4 +108,6 @@ void btree_recorrer_bfs(
     BTree arbol, FuncionVisitante04 visit, FuncionCopia04 copia,
     FuncionDestructora04 demoledora);
 
+void print_binary_tree(BTree tree);
+
 #endif /* __BTREE_H__ */

@@ -269,3 +269,33 @@ void btree_recorrer_bfs(
   printf("\n");
   gqueue_destruir(cola, (FuncionDestructora04)demoledora);
 }
+
+void print_binary_tree_aux(
+    BTree tree, int is_left, int *open_levels, int num_levels) {
+  if (tree == NULL) return;
+
+  for (int i = 0; i < num_levels; i++)
+    printf("%s", open_levels[i] ? "│  " : "   ");
+
+  if (tree->dato != 0)
+    printf("%s %d\n", is_left ? "└─" : "│─", tree->dato);
+  else
+    printf("%s (nil)\n", is_left ? "└─" : "│─");
+
+  num_levels++;
+  open_levels[num_levels] = 1;
+
+  print_binary_tree_aux(tree->right, 0, open_levels, num_levels);
+  open_levels[num_levels] = 0;
+  print_binary_tree_aux(tree->left, 1, open_levels, num_levels);
+}
+
+void print_binary_tree(BTree tree) {
+  if (tree == NULL) return;
+
+  printf("%d\n", tree->dato);
+  int open_levels[50] = {1};
+  print_binary_tree_aux(tree->right, 0, open_levels, 0);
+  open_levels[0] = 0;
+  print_binary_tree_aux(tree->left, 1, open_levels, 0);
+}
