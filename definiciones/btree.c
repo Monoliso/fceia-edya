@@ -272,26 +272,30 @@ void btree_recorrer_bfs(
 
 void print_binary_tree_aux(
     BTree tree, int is_left, int *open_levels, int num_levels) {
-  if (tree == NULL) return;
 
   for (int i = 0; i < num_levels; i++)
     printf("%s", open_levels[i] ? "│  " : "   ");
+  printf("%s ", is_left ? "└─" : "│─");
 
-  if (tree->dato != 0)
-    printf("%s %d\n", is_left ? "└─" : "│─", tree->dato);
-  else
-    printf("%s (nil)\n", is_left ? "└─" : "│─");
+  if (btree_empty(tree)) {
+    printf("(nil)\n");
+    return;
+  }
+  printf("%d\n", tree->dato); // Está bueno porque puede ser un método general.
+  if (btree_empty(tree->left) && btree_empty(tree->right)) return;
 
   num_levels++;
   open_levels[num_levels] = 1;
-
   print_binary_tree_aux(tree->right, 0, open_levels, num_levels);
   open_levels[num_levels] = 0;
   print_binary_tree_aux(tree->left, 1, open_levels, num_levels);
 }
 
 void print_binary_tree(BTree tree) {
-  if (tree == NULL) return;
+  if (btree_empty(tree)) {
+    printf("(nil)\n");
+    return;
+  };
 
   printf("%d\n", tree->dato);
   int open_levels[50] = {1};

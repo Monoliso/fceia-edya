@@ -17,9 +17,7 @@ int main() {
   BTree arbol = btree_unir(
       95,
       btree_unir(
-          73,
-          btree_unir(
-              38, btree_unir(22, NULL, NULL), btree_unir(10, NULL, NULL)),
+          73, btree_unir(38, NULL, btree_unir(22, NULL, NULL)),
           btree_unir(
               60, btree_unir(52, NULL, NULL), btree_unir(15, NULL, NULL))),
       btree_unir(45, btree_unir(33, NULL, NULL), btree_unir(40, NULL, NULL)));
