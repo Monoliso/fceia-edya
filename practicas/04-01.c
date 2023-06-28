@@ -36,7 +36,9 @@ int main() {
                                 "edya",      "farmacia", "tiempo",   "celular"};
 
   // Creamos un arbol vacio y le insertamos las palabras
-  BSTree arbol = bstee_crear(copiar_cadena, comparar_cadena, destruir_cadena);
+  BSTree arbol = bstee_crear(
+      copiar_cadena, comparar_cadena, destruir_cadena,
+      (FuncionImpresora)str_imprimir);
   for (int i = 0; i < N_PALABRAS; i++)
     bstree_insertar(arbol, palabras[i]);
 
@@ -55,9 +57,10 @@ int main() {
   // TODO: Generar un árbol a partir de preorden e inorden.
   BSTree arbol01 = bts_crear_desde_preorden(
       valores, dimension, (FuncionCopiadora)int_copiar,
-      (FuncionComparadora)int_comparar, (FuncionDestructora)int_eliminar);
-  gbtree_imprimir(arbol01, (FuncionVisitante)int_imprimir);
-  gbtree_imprimir(arbol, (FuncionVisitante)str_imprimir);
+      (FuncionComparadora)int_comparar, (FuncionDestructora)int_eliminar,
+      (FuncionImpresora)int_imprimir);
+  bstree_imprimir(arbol01);
+  bstree_imprimir(arbol);
 
   // Buscar elementos
   assert(bstree_buscar(arbol, "farmacia") == 1);

@@ -108,6 +108,7 @@ struct _BSTree {
   FuncionCopiadora copia;
   FuncionComparadora comp;
   FuncionDestructora destr;
+  FuncionImpresora impresora;
 };
 
 /**
@@ -115,13 +116,15 @@ struct _BSTree {
  * Por unica vez se piden por parametro los punteros a funcion.
  */
 BSTree bstee_crear(
-    FuncionCopiadora copia, FuncionComparadora comp, FuncionDestructora destr) {
+    FuncionCopiadora copia, FuncionComparadora comp, FuncionDestructora destr,
+    FuncionImpresora imprimir) {
   BSTree arbol = malloc(sizeof(struct _BSTree));
   assert(arbol != NULL);
   arbol->raiz = NULL;
   arbol->copia = copia;
   arbol->comp = comp;
   arbol->destr = destr;
+  arbol->impresora = imprimir;
   return arbol;
 }
 
@@ -162,9 +165,10 @@ void bstree_recorrer(
 // --------------------------
 BSTree bts_crear_desde_preorden(
     void **preorden, int dimension, FuncionCopiadora copiar,
-    FuncionComparadora comp, FuncionDestructora demoledora) {
+    FuncionComparadora comp, FuncionDestructora demoledora,
+    FuncionImpresora imprimir) {
   if (!preorden || !dimension) return NULL;
-  BSTree arbol = bstee_crear(copiar, comp, demoledora);
+  BSTree arbol = bstee_crear(copiar, comp, demoledora, imprimir);
   for (int i = 0; i < dimension; i++) {
     bstree_insertar(arbol, preorden[i]);
   }
@@ -177,73 +181,40 @@ int bstree_vacio(BSTree arbol) {
   return arbol == NULL || gbtree_vacio(arbol->raiz);
 }
 
-void imprimir_linea(
-    void *dato, FuncionVisitante visit, int izq, int *niveles_abiertos,
-    int niv_recorridos) {
-  // El problema con la pila es que tiene sentido para el guardado, pero a la
-  // hora de imprimir cada línea tengo que saber cuales niveles siguen abiertos,
-  // empezando por el primero, entonces cómo hago? Tengo una variable llamada
-  // niveles recorridos?
-  for (int i = 0; i < niv_recorridos; i++) {
-    if (niveles_abiertos[i]) {
-      printf("│  ");
-    } else
-      printf("   ");
-  }
-  if (dato != 0) {
-    if (izq) {
-      printf("└─ ");
-      visit(dato);
-      printf("\n");
-    } else {
-      printf("│─ ");
-      visit(dato);
-      printf("\n");
-    }
-  } else {
-    if (izq)
-      printf("└─ (nil)\n");
-    else
-      printf("│─ (nil)\n");
-  }
-}
+void bstree_imprimir_aux(
+    BST_Nodo *arbol, int es_izq, int *niveles_abiertos, int num_niveles,
+    FuncionImpresora impresora) {
 
-void gbtree_imprimir_aux(
-    GBT_Nodo *arbol, FuncionVisitante visit, int izq, int *niv_abiertos,
-    int niv_recorridos) {
+  for (int i = 0; i < num_niveles; i++)
+    printf("%s", niveles_abiertos[i] ? "│  " : "   ");
+  printf("%s ", es_izq ? "└─" : "│─");
 
-  imprimir_linea(arbol->dato, visit, izq, niv_abiertos, niv_recorridos);
+  if (gbtree_vacio(arbol)) {
+    printf("(nil)\n");
+    return;
+  }
+  impresora(arbol->dato);
+  printf("\n");
   if (gbtree_vacio(arbol->izq) && gbtree_vacio(arbol->der)) return;
 
-  niv_recorridos++;
-  niv_abiertos[niv_recorridos] = 1;
-
-  if (gbtree_vacio(arbol->izq)) {
-    gbtree_imprimir_aux(arbol->der, visit, 0, niv_abiertos, niv_recorridos);
-    imprimir_linea(NULL, visit, 1, niv_abiertos, niv_recorridos);
-  } else if (gbtree_vacio(arbol->der)) {
-    imprimir_linea(NULL, visit, 0, niv_abiertos, niv_recorridos);
-    niv_abiertos[niv_recorridos] = 0;
-    gbtree_imprimir_aux(arbol->izq, visit, 1, niv_abiertos, niv_recorridos);
-  } else {
-    gbtree_imprimir_aux(arbol->der, visit, 0, niv_abiertos, niv_recorridos);
-    niv_abiertos[niv_recorridos] = 0;
-    gbtree_imprimir_aux(arbol->izq, visit, 1, niv_abiertos, niv_recorridos);
-  }
+  num_niveles++;
+  niveles_abiertos[num_niveles] = 1;
+  bstree_imprimir_aux(arbol->der, 0, niveles_abiertos, num_niveles, impresora);
+  niveles_abiertos[num_niveles] = 0;
+  bstree_imprimir_aux(arbol->izq, 1, niveles_abiertos, num_niveles, impresora);
 }
 
-void gbtree_imprimir(BSTree arbol, FuncionVisitante visit) {
-  if (bstree_vacio(arbol)) return;
-  GBT_Nodo *nodo = arbol->raiz;
-  visit(nodo->dato);
+void bstree_imprimir(BSTree arbol) {
+  if (bstree_vacio(arbol)) {
+    printf("(nil)\n");
+    return;
+  };
+
+  BST_Nodo *nodo = arbol->raiz;
+  arbol->impresora(nodo->dato);
   printf("\n");
-  int *niveles_abiertos = malloc(sizeof(int) * 50);
-  int niv_recorridos = 0;
-  niveles_abiertos[0] = 1;
-  gbtree_imprimir_aux(nodo->der, visit, 0, niveles_abiertos, niv_recorridos);
+  int niveles_abiertos[50] = {1};
+  bstree_imprimir_aux(nodo->der, 0, niveles_abiertos, 0, arbol->impresora);
   niveles_abiertos[0] = 0;
-  gbtree_imprimir_aux(nodo->izq, visit, 1, niveles_abiertos, niv_recorridos);
-  // Se pueden remover todas las líneas superiores a coste de un nivel más.
-  // gbtree_imprimir_aux(nodo, visit, 0, niveles_abiertos, 0);
-  free(niveles_abiertos);
+  bstree_imprimir_aux(nodo->izq, 1, niveles_abiertos, 0, arbol->impresora);
 }

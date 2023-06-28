@@ -4,7 +4,7 @@
 typedef void *(*FuncionCopiadora)(void *dato);
 typedef int (*FuncionComparadora)(void *, void *);
 typedef void (*FuncionDestructora)(void *dato);
-typedef void (*FuncionVisitante)(void *dato);
+typedef void (*FuncionImpresora)(void *dato);
 typedef void (*FuncionVisitanteExtra)(void *dato, void *extra);
 
 // Inicialmente creí que era de interes tener la definición superior en la
@@ -45,7 +45,8 @@ typedef enum {
  * Retorna un arbol de busqueda binaria vacio.
  * Por unica vez se piden por parametro los punteros a funcion.
  */
-BSTree bstee_crear(FuncionCopiadora, FuncionComparadora, FuncionDestructora);
+BSTree bstee_crear(
+    FuncionCopiadora, FuncionComparadora, FuncionDestructora, FuncionImpresora);
 
 /**
  * Destruye el arbol y sus datos.
@@ -74,11 +75,11 @@ void bstree_recorrer(
  */
 BSTree bts_crear_desde_preorden(
     void **preorden, int dimension, FuncionCopiadora, FuncionComparadora,
-    FuncionDestructora);
+    FuncionDestructora, FuncionImpresora);
 
 /**
  * Imprime una gráfica del árbol.
  */
-void gbtree_imprimir(BSTree arbol, FuncionVisitante visit);
+void bstree_imprimir(BSTree arbol);
 
 #endif //__BSTREE_ALT_H__
