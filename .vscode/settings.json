@@ -14,7 +14,10 @@
         "gstack.h": "c",
         "glist.h": "c",
         "btree.h": "c",
-        "gqueue.h": "c"
+        "gqueue.h": "c",
+        "gheaps.h": "c",
+        "tablahash.h": "c",
+        "ghashtable.h": "c"
     },
     // Las ligaduras deben estar con fuentes compatibles.
     "editor.fontLigatures": true,
