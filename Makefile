@@ -30,7 +30,7 @@ objetivos: $(OBJETIVO)
 obj/gheaps.o: definiciones/gheaps.c cabeceras/estructuras/gheaps.h
 	$(CC) $(CFLAGS) -I$(CABECERAS) $< -c -o $@
 
-05: practicas/05.c practicas/05-contacto.c practicas/05-utils.c definiciones/ghashtable.c 
+05: practicas/05.c practicas/05-contacto.c practicas/05-utils.c definiciones/ghashtable_lp.c 
 	$(CC) $(CFLAGS) -I$(CABECERAS) $^ -o bin/$@
 
 .PHONY: clean

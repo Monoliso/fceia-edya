@@ -27,6 +27,13 @@ GList glist_crear();
 void glist_destruir(GList lista, FuncionDestructora destruir);
 
 /**
+ * Elimina un elemento de la lista si se encuentra. La eficiencia depende de la
+ * implementación.
+ */
+GList glist_remover_elemento(
+    GList, FuncionDestructora, FuncionComparadora, void *);
+
+/**
  * Determina si la lista es vacía.
  */
 int glist_vacia(GList lista);

@@ -16,10 +16,40 @@ void glist_destruir(GList list, FuncionDestructora destroy) {
   GNode *nodeToDelete = NULL;
   while (list != NULL) {
     nodeToDelete = list;
-    list         = list->next;
+    list = list->next;
     destroy(nodeToDelete->data);
     free(nodeToDelete);
   }
+}
+
+GList glist_buscar_ant_lineal(
+    GList lista, FuncionComparadora comparar, void *dato) {
+
+  if (!lista) return NULL;
+  int condicion = 0;
+  GNode *nodo = lista;
+  GNode *resultado = NULL;
+  for (; condicion || nodo->next != NULL; nodo = nodo->next) {
+    if (comparar(nodo->next->data, dato) == 0) {
+      resultado = nodo->next;
+      condicion = 1;
+    }
+  }
+  return resultado;
+}
+
+GList glist_remover_elemento(
+    GList lista, FuncionDestructora demoledora, FuncionComparadora comparar,
+    void *dato) {
+  GNode *anterior = glist_buscar_ant_lineal(lista, comparar, dato);
+  GNode *nodo = anterior->next;
+  if (nodo) {
+    demoledora(nodo->data);
+    anterior->next = nodo->next;
+    free(nodo);
+  } else
+    anterior->next = NULL;
+  return lista;
 }
 
 /**
@@ -57,7 +87,7 @@ GList glist_remover_inicio(GList lista, FuncionDestructora demoledora) {
   if (glist_vacia(lista)) return NULL;
 
   GList nueva_lista = lista->next;
-  lista->next       = NULL;
+  lista->next = NULL;
   glist_destruir(lista, demoledora);
   return nueva_lista;
 }
@@ -94,7 +124,7 @@ void sglist_destruir(SGList lista, FuncionDestructora demoledora) {
   GNode *nodeToDelete = NULL;
   while (lista != NULL) {
     nodeToDelete = lista;
-    lista        = lista->next;
+    lista = lista->next;
     demoledora(nodeToDelete->data);
     // printf("Borrado %p\n", nodeToDelete);
     free(nodeToDelete);
@@ -112,10 +142,10 @@ SGList sglist_insertar(
     SGList lista, void *dato, FuncionCopia copiar,
     FuncionComparadora comparar) {
   GNode *nuevo_nodo = malloc(sizeof(GNode));
-  nuevo_nodo->data  = copiar(dato);
+  nuevo_nodo->data = copiar(dato);
 
-  int insertado        = 0;
-  GNode *nodo          = lista;
+  int insertado = 0;
+  GNode *nodo = lista;
   GNode *nodo_anterior = NULL;
 
   // 3er Intento
@@ -138,7 +168,7 @@ SGList sglist_insertar(
   while (insertado != 1) {
     if (nodo != NULL && comparar(nodo->data, dato) < 0) {
       nodo_anterior = nodo;
-      nodo          = nodo->next;
+      nodo = nodo->next;
     } else {
       if (nodo_anterior != NULL) nodo_anterior->next = nuevo_nodo;
       if (nodo == NULL)
@@ -159,7 +189,7 @@ int sglist_buscar(SGList lista, void *dato, FuncionComparadora comparar) {
     if (nodo == NULL) buscar = 0;
     if (comparar(nodo->data, dato) == 0) {
       encontrado = 1;
-      buscar     = 0;
+      buscar = 0;
     }
   }
   return encontrado;

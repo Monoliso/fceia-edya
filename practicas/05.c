@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define CAPACIDAD_INICIAL 11
+#define CAPACIDAD_INICIAL 8
 /** Capacidad inicial para la tabla hash */
 
 /**
@@ -35,7 +35,7 @@ int main() {
     printf(
         " en la casilla %d.\n",
         contacto_heashear(agenda[i]) % ghashtable_capacidad(tabla));
-    int nElems = ghashtable_nelems(tabla);
+    unsigned int nElems = ghashtable_nelems(tabla);
     ghashtable_insertar(tabla, agenda[i]);
     if (ghashtable_nelems(tabla) == nElems)
       printf("\tInsercion fallida: Colision.\n");
