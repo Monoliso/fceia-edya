@@ -22,7 +22,7 @@ int main() {
   for (int i = 0; i < cant_contactos; i++) {
     tablahash_insertar(tabla, agenda[i]);
   }
-  puts("\nTablita:");
+  puts("\nTabla:");
   tablahash_imprimir(tabla);
 
   printf("\nEl cluster de mayor tamaño es %d\n", tablahash_max_cluster(tabla));
@@ -43,6 +43,8 @@ int main() {
     contacto_imprimir(agenda[0]);
     printf(" no se encontró.\n");
   }
+  puts("\nTabla:");
+  tablahash_imprimir(tabla);
 
   for (int i = 0; i < cant_contactos; i++) {
     contacto_destruir(agenda[i]);

@@ -60,7 +60,7 @@ int casilla_vacia(CasillaHash *casilla) {
 void tablahash_imprimir(TablaHash tabla) {
   puts("--------------------");
   for (int i = 0; i < tabla->capacidad; i++) {
-    if (tabla->elems[i]) {
+    if (!casilla_vacia(tabla->elems[i])) {
       tabla->imprimir(tabla->elems[i]->dato);
       puts("");
     } else
