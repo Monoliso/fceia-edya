@@ -1,0 +1,12 @@
+Los cambios que se realizaron en tabla hash fueron:
+
+Se crearon métodos wrapers que permitan un mejor código en general. Con el nuevo método de insertar lo único que hago es que se inserta el dato directamente en la tabla, por lo que puedo utilizar esto para el redimensionar (por ejemplo). Luego para hacer las copias a la hora de insertar desde main hago un wraper que envie la copia, así de sencillo.
+Lo mismo para buscar. Se utiliza en eliminar, porque la función ahora es mucho más fácil de leer.
+Se agregó un campo en la definición para la impresión.
+
+Además se arreglaron los errores comentidos durante el final. Estos son:
+
+ - En el buscar no se detenía al encontrarse con una casilla vacía (cosa que tiene sentido porque terminó el cluster).
+ - El eliminar por algún motivo no utilizaba la función hash. Lo bueno, es que al cambiar buscar tengo todo lo que necesito. Además no decendía el contador de elementos.
+ - (Uno que ni se dieron cuenta los profesores) El factor de carga le falta el + 1 en la cantidad de elementos.
+ - Max cluster detecta los cluster circulares.
