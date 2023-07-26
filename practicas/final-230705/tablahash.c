@@ -53,41 +53,37 @@ TablaHash tablahash_crear(
 void _tablahash_redimensionar(TablaHash);
 
 int casilla_vacia(CasillaHash *casilla) {
+
   if (casilla) return casilla->dato ? 0 : 1;
   return 1;
 }
 
 void tablahash_imprimir(TablaHash tabla) {
+
   puts("--------------------");
   for (int i = 0; i < tabla->capacidad; i++) {
     if (!casilla_vacia(tabla->elems[i])) {
       tabla->imprimir(tabla->elems[i]->dato);
       puts("");
-    } else
+    } else if (tabla->elems[i])
+      puts("Eliminado");
+    else
       puts("Vacio");
     puts("--------------------");
   }
 }
 
 CasillaHash *_tablahash_buscar(TablaHash tabla, void *dato) {
-  // Calculamos la posicion del dato dado, de acuerdo a la funcion hash.
-  unsigned idx = tabla->hash(dato) % tabla->capacidad;
 
-  // Retornar NULL si la casilla estaba vacia.
-  if (!tabla->elems[idx]) return NULL;
-
-  int condicion = 0;
   void *casilla_buscada = NULL;
-  for (int i = 0; !condicion && i < tabla->capacidad; i++) {
-    idx = (tabla->hash(dato) + i) % tabla->capacidad;
-    // printf("Indice %i con i:%i, con dato: %s\n", idx, i, (char*)
-    // tabla->elems[idx]->dato);
-    if (!casilla_vacia(tabla->elems[idx]) &&
+  for (int i = 0, condicion = 0; !condicion && i < tabla->capacidad; i++) {
+    unsigned idx = (tabla->hash(dato) + i) % tabla->capacidad;
+    if (!tabla->elems[idx])
+      condicion = 1; // Terminó el cluster
+    else if (
+        !casilla_vacia(tabla->elems[idx]) &&
         tabla->comp(tabla->elems[idx]->dato, dato) == 0) {
-      // printf("Entra: %s\n", (char *)tabla->elems[idx]->dato);
       casilla_buscada = tabla->elems[idx];
-      condicion = 1;
-    } else if (casilla_vacia(tabla->elems[idx])) {
       condicion = 1;
     }
   }
@@ -99,6 +95,7 @@ CasillaHash *_tablahash_buscar(TablaHash tabla, void *dato) {
  * buscado no se encuentra en la tabla.
  */
 void *tablahash_buscar(TablaHash tabla, void *dato) {
+
   CasillaHash *casilla = _tablahash_buscar(tabla, dato);
   if (casilla) return tabla->copia(casilla->dato);
   return NULL;
@@ -130,19 +127,13 @@ void _tablahash_insertar(TablaHash tabla, void *dato) {
 
   float factor_carga = (float)(tabla->numElems + 1) / (float)tabla->capacidad;
   if (factor_carga >= FAC_CARGA) {
-    // printf("Redimensionando\n");
     _tablahash_redimensionar(tabla);
-    // printf("Redimensionado\n");
   }
 
-  // printf("Cant elementos: %i\n", tabla->numElems);
   tabla->numElems++;
-  int condicion = 0;
-  for (int i = 0; !condicion && i < tabla->capacidad; i++) {
+  for (int i = 0, condicion = 0; !condicion && i < tabla->capacidad; i++) {
     unsigned idx = (tabla->hash(dato) + i) % tabla->capacidad;
-    // printf("Memoria: %p\n", tabla->elems[idx]);
     if (casilla_vacia(tabla->elems[idx])) {
-      // printf("Indice: %i\n", idx);
       if (!tabla->elems[idx]) tabla->elems[idx] = malloc(sizeof(CasillaHash));
       tabla->elems[idx]->dato = dato;
       condicion = 1;
@@ -194,17 +185,14 @@ void _tablahash_redimensionar(TablaHash tabla) {
  */
 int tablahash_max_cluster(TablaHash tabla) {
 
-  int max = 0;
-  int cluster_actual = 0;
+  int max_cluster = 0;
   int cluster_circular = 0;
 
-  for (int i = 0; i < tabla->capacidad; i++) {
+  for (int i = 0, cluster_actual = 0; i < tabla->capacidad; i++) {
     if (tabla->elems[i]) {
       cluster_actual++;
       if (i == tabla->capacidad - 1) cluster_circular += cluster_actual;
-      if (cluster_actual > max) {
-        max = cluster_actual;
-      }
+      if (cluster_actual > max_cluster) max_cluster = cluster_actual;
     } else {
       if (tabla->elems[0] && !cluster_circular)
         cluster_circular += cluster_actual;
@@ -212,5 +200,5 @@ int tablahash_max_cluster(TablaHash tabla) {
     }
   }
   // printf("%d", cluster_circular);
-  return max > cluster_circular ? max : cluster_circular;
+  return max_cluster > cluster_circular ? max_cluster : cluster_circular;
 }

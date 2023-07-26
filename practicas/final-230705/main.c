@@ -45,6 +45,7 @@ int main() {
   }
   puts("\nTabla:");
   tablahash_imprimir(tabla);
+  printf("\nEl cluster de mayor tamaño es %d\n", tablahash_max_cluster(tabla));
 
   for (int i = 0; i < cant_contactos; i++) {
     contacto_destruir(agenda[i]);
